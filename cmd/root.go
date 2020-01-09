@@ -323,12 +323,17 @@ func (config *LoggingConfig) InitLogging(outWriter, errWriter io.Writer) {
 	}
 }
 
-func (config *RootCommandConfig) initLogging() error {
+func (config *LoggingConfig) SetVerbose(verbose bool) {
 	var allLoggers = []*appsodylogger{&config.Info, &config.Warning, &config.Error, &config.Debug, &config.Container, &config.InitScript, &config.DockerLog}
+	for _, l := range allLoggers {
+		l.verbose = verbose
+	}
+}
+
+func (config *RootCommandConfig) initLogging() error {
+
 	if config.Verbose {
-		for _, l := range allLoggers {
-			l.verbose = true
-		}
+		config.SetVerbose(true)
 
 		homeDirectory, dirErr := homedir.Dir()
 		if dirErr != nil {

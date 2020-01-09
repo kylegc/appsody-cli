@@ -23,12 +23,13 @@ import (
 var repoRemoveLogsTests = []struct {
 	testName     string
 	args         []string // input
-	expectedLogs string   // expected to be in the error message
+	configDir    string
+	expectedLogs string // expected to be in the error message
 }{
-	{"No args", nil, "you must specify repository name"},
-	{"Existing default repo", []string{"incubator"}, "cannot remove the default repository"},
-	{"Non-existing repo", []string{"test"}, "not in configured list of repositories"},
-	{"Badly formatted repo config", []string{"test", "--config", "testdata/bad_format_repository_config/config.yaml"}, "Failed to parse repository file yaml"},
+	{"No args", nil, "", "you must specify repository name"},
+	{"Existing default repo", []string{"incubator"}, "", "cannot remove the default repository"},
+	{"Non-existing repo", []string{"test"}, "", "not in configured list of repositories"},
+	{"Badly formatted repo config", []string{"test"}, "bad_format_repository_config", "Failed to parse repository file yaml"},
 }
 
 func TestRepoRemoveLogs(t *testing.T) {
@@ -43,6 +44,8 @@ func TestRepoRemoveLogs(t *testing.T) {
 		t.Run(tt.testName, func(t *testing.T) {
 			sandbox, cleanup := cmdtest.TestSetupWithSandbox(t, true)
 			defer cleanup()
+
+			sandbox.SetConfigInTestData(tt.configDir)
 
 			// see how many repos we currently have
 			startRepos := getRepoListOutput(t, sandbox)
@@ -92,12 +95,13 @@ func TestRepoRemove(t *testing.T) {
 
 func TestRepoRemoveDryRun(t *testing.T) {
 	sandbox, cleanup := cmdtest.TestSetupWithSandbox(t, true)
+	sandbox.SetConfigInTestData("multiple_repository_config")
 	defer cleanup()
 
 	// see how many repos we currently have
 	startRepos := getRepoListOutput(t, sandbox)
 
-	args := []string{"repo", "remove", "localhub", "--config", "testdata/multiple_repository_config/config.yaml", "--dryrun"}
+	args := []string{"repo", "remove", "localhub", "--dryrun"}
 	output, err := cmdtest.RunAppsody(sandbox, args...)
 	if err != nil {
 		t.Error(err)

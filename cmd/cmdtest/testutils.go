@@ -34,7 +34,7 @@ const CLEANUP = true
 
 const TravisTesting = false
 
-var TestDirPath = filepath.Join("..", "cmd", "testdata")
+var TestDirPath, _ = filepath.Abs(filepath.Join("..", "cmd", "testdata"))
 
 // Repository struct represents an appsody repository
 type Repository struct {
@@ -44,11 +44,12 @@ type Repository struct {
 
 type TestSandbox struct {
 	*testing.T
-	ProjectDir  string
-	ProjectName string
-	ConfigDir   string
-	ConfigFile  string
-	Verbose     bool
+	ProjectDir   string
+	TestDataPath string
+	ProjectName  string
+	ConfigDir    string
+	ConfigFile   string
+	Verbose      bool
 }
 
 func inArray(haystack []string, needle string) bool {
@@ -104,6 +105,18 @@ func TestSetupWithSandbox(t *testing.T, parallel bool) (*TestSandbox, func()) {
 	}
 	t.Log("Created testing config dir: ", sandbox.ConfigDir)
 
+	var outBuffer bytes.Buffer
+	log := &cmd.LoggingConfig{}
+	log.InitLogging(&outBuffer, &outBuffer)
+	log.SetVerbose(true)
+	sandbox.TestDataPath = filepath.Join(testDir, "testdata")
+	err = cmd.CopyDir(log, TestDirPath, sandbox.TestDataPath)
+	t.Log(outBuffer.String())
+	if err != nil {
+		t.Fatalf("Error copying testdata from '%s' to sandbox '%s': %v", TestDirPath, sandbox.TestDataPath, err)
+	}
+	t.Log("Created testing testdata dir: ", sandbox.TestDataPath)
+
 	// Create the config file if it does not already exist.
 	sandbox.ConfigFile = filepath.Join(sandbox.ConfigDir, "config.yaml")
 	data := []byte("home: " + sandbox.ConfigDir + "\n" + "generated-by-tests: Yes" + "\n")
@@ -121,6 +134,13 @@ func TestSetupWithSandbox(t *testing.T, parallel bool) (*TestSandbox, func()) {
 		}
 	}
 	return sandbox, cleanupFunc
+}
+
+func (s *TestSandbox) SetConfigInTestData(pathUnderTestdata string) {
+	if pathUnderTestdata != "" {
+		s.ConfigDir = filepath.Join(s.TestDataPath, pathUnderTestdata)
+		s.ConfigFile = filepath.Join(s.ConfigDir, "config.yaml")
+	}
 }
 
 // RunAppsody runs the appsody CLI with the given args, using
