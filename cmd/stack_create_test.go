@@ -20,6 +20,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/appsody/appsody/cmd"
 	"github.com/appsody/appsody/cmd/cmdtest"
 )
 
@@ -39,7 +40,7 @@ func TestStackCreateSampleStack(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	exists, err := cmdtest.Exists("testing-stack")
+	exists, err := cmd.Exists("testing-stack")
 
 	if !exists {
 		t.Fatal(err)
@@ -66,7 +67,7 @@ func TestStackCreateWithCopyTag(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	exists, err := cmdtest.Exists("testing-stack")
+	exists, err := cmd.Exists("testing-stack")
 
 	if !exists {
 		t.Fatal(err)
@@ -93,7 +94,7 @@ func TestStackCreateInvalidStackCase1(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	exists, err := cmdtest.Exists("testing-stack")
+	exists, err := cmd.Exists("testing-stack")
 
 	if exists {
 		t.Fatal(err)
@@ -116,7 +117,7 @@ func TestStackCreateInvalidStackCase2(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	exists, err := cmdtest.Exists("testing-stack")
+	exists, err := cmd.Exists("testing-stack")
 
 	if exists {
 		t.Fatal(err)
@@ -139,7 +140,7 @@ func TestStackCreateInvalidStackCase3(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	exists, err := cmdtest.Exists("testing-stack")
+	exists, err := cmd.Exists("testing-stack")
 
 	if exists {
 		t.Fatal(err)
@@ -162,7 +163,7 @@ func TestStackCreateInvalidStackCase4(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	exists, err := cmdtest.Exists("testing-stack")
+	exists, err := cmd.Exists("testing-stack")
 
 	if exists {
 		t.Fatal(err)
@@ -185,7 +186,7 @@ func TestStackCreateInvalidStackName(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	exists, err := cmdtest.Exists("testing_stack")
+	exists, err := cmd.Exists("testing_stack")
 
 	if exists {
 		t.Fatal(err)
@@ -203,7 +204,7 @@ func TestStackCreateInvalidLongStackName(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	exists, err := cmdtest.Exists("testing_stacktesting-stacktesting-stacktesting-stacktesting-stacktesting-stacktesting-stacktesting-stacktesting-stacktesting-stacktesting-stack")
+	exists, err := cmd.Exists("testing_stacktesting-stacktesting-stacktesting-stacktesting-stacktesting-stacktesting-stacktesting-stacktesting-stacktesting-stacktesting-stack")
 
 	if exists {
 		t.Fatal(err)
@@ -226,7 +227,7 @@ func TestStackAlreadyExists(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	exists, err := cmdtest.Exists("testing-stack")
+	exists, err := cmd.Exists("testing-stack")
 
 	if !exists {
 		t.Fatal(err)

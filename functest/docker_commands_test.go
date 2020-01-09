@@ -19,7 +19,7 @@ import (
 	"strings"
 	"testing"
 
-	cmd "github.com/appsody/appsody/cmd"
+	"github.com/appsody/appsody/cmd"
 )
 
 var invalidDockerCmdsTest = []struct {

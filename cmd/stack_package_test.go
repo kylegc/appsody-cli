@@ -23,7 +23,7 @@ import (
 	"strings"
 	"testing"
 
-	cmd "github.com/appsody/appsody/cmd"
+	"github.com/appsody/appsody/cmd"
 	"github.com/appsody/appsody/cmd/cmdtest"
 	"github.com/pkg/errors"
 	"gopkg.in/yaml.v2"

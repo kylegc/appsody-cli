@@ -17,7 +17,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	cmd "github.com/appsody/appsody/cmd"
+	"github.com/appsody/appsody/cmd"
 	"github.com/appsody/appsody/cmd/cmdtest"
 )
 

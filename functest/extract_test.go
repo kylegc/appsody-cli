@@ -22,8 +22,8 @@ import (
 	"strings"
 	"testing"
 
-	cmd "github.com/appsody/appsody/cmd"
-	cmdtest "github.com/appsody/appsody/cmd/cmdtest"
+	"github.com/appsody/appsody/cmd"
+	"github.com/appsody/appsody/cmd/cmdtest"
 )
 
 // Simple test for appsody extract command.

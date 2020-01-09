@@ -24,7 +24,7 @@ import (
 	"testing"
 
 	"github.com/appsody/appsody-operator/pkg/apis/appsody/v1beta1"
-	cmd "github.com/appsody/appsody/cmd"
+	"github.com/appsody/appsody/cmd"
 	"github.com/appsody/appsody/cmd/cmdtest"
 	"sigs.k8s.io/yaml"
 )
